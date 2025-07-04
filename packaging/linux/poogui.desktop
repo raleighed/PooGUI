@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=PooGUI
-Exec=/opt/poogui/poogui
-Terminal=false
-Type=Application
-Comment=An all-purpose application for media manipulation.
-Categories=Utility;AudioVideo;
-Icon=poogui
