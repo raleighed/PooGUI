@@ -1,0 +1,116 @@
+{
+  "fetch": {
+    "gitFromCwd": true,
+    "postFetch": [
+      "cd $fetchStep_sourcePath && mkdir bin",
+      {
+        "platform": ["linux"],
+        "commands": [
+          "cd $fetchStep_sourcePath && cp ../../../bin/* bin -r"
+        ]
+      },
+      {
+        "platform": ["macos"],
+        "commands": [
+          "cd $fetchStep_sourcePath && cp ../../../bin/* bin -r"
+        ]
+      },
+      {
+        "platform": ["windows"],
+        "commands": [
+          "cd $fetchStep_sourcePath && xcopy ..\\\\..\\\\..\\\\bin bin /E /I /H /Y"
+        ]
+      }
+    ]
+  },
+  "build": {
+    "applicationName": "PooGUI",
+    "applicationVersion": "0.7.0",
+    "packageManager": "npm"
+  },
+  "prune": {
+    "skip": false,
+    "patterns": [
+      {
+        "keep": [
+          "LICENSE",
+          "README.md",
+          "package.json",
+          "*.node",
+          "bin/**/*",
+          "dist/**/*",
+          "assets/**/*"
+        ]
+      }
+    ],
+    "postPrune": [
+      {
+        "platform": ["linux"],
+        "commands": [
+          "cd $fetchStep_sourcePath && cp $pruneStep_trashDirectory/packaging/linux/poogui ."
+        ]
+      },
+      {
+        "platform": ["macos"],
+        "commands": [
+          "cd $fetchStep_sourcePath && cp $pruneStep_trashDirectory/packaging/macos/poogui ."
+        ]
+      },
+      {
+        "platform": ["windows"],
+        "commands": [
+          "cd $fetchStep_sourcePath && copy $pruneStep_trashDirectory\\\\packaging\\\\windows\\\\poogui.exe"
+        ]
+      }
+    ]
+  },
+  "addLauncher": {
+    "skip": true,
+    "jsEntryPoint": "dist/index.js",
+    "windowsIcon": "windows/poogui.ico",
+    "windowsVersionString": "0.7.0",
+    "windowsFileVersion": "0.7.0",
+    "windowsProductName": "PooGUI",
+    "windowsLegalCopyright": "Copyright (c) 2024-2025 raleigh",
+    "windowsOriginalFilename": "poogui.exe",
+    "windowsFileDescription": "PooGUI"
+  },
+  "quietQode": {},
+  "zip": {
+    "platforms": ["linux", "macos", "windows"],
+    "skip": false
+  },
+  "debian": {
+    "skip": false,
+    "controlFields": {
+      "Section": "default",
+      "Maintainer": "raleigh",
+      "Priority": "optional",
+      "Description": "An all-purpose application for media manipulation."
+    },
+    "prePack": [
+      "cd $debianStep_debianSourceDirectory && mkdir -p usr/share/applications",
+      "cd $debianStep_debianSourceDirectory && cp $pruneStep_trashDirectory/packaging/linux/poogui.desktop usr/share/applications/",
+
+      "cd $debianStep_debianSourceDirectory && mkdir -p usr/share/icons",
+      "cd $debianStep_debianSourceDirectory && cp -r $pruneStep_trashDirectory/packaging/linux/icons/hicolor usr/share/icons/"
+    ]
+  },
+  "nsis": {
+    "skip": false,
+    "appTitle": "PooGUI",
+    "shortcutIcon": "$pruneStep_trashDirectory/packaging/windows/poogui.ico",
+    "installerIcon": "$pruneStep_trashDirectory/packaging/windows/poogui.ico",
+    "uninstallerIcon": "$pruneStep_trashDirectory/packaging/windows/poogui.ico"
+  },
+  "dmg" : {
+    "applicationIcon": "$pruneStep_trashDirectory/packaging/macos/poogui.icns",
+    "applicationTitle": "PooGUI",
+    "nsHumanReadableCopyright": "Copyright (c) 2024-2025 raleigh",
+    "cfBundleIdentifier": "com.raleigh.poogui",
+    "cfBundleExecutable": "poogui",
+    "prePack": [
+      "mv $dmgStep_dmgResourcesDirectory/poogui $dmgStep_dmgMacOSDirectory/"
+    ]
+  }
+}
