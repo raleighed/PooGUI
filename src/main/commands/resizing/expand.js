@@ -1,5 +1,5 @@
 const { execPromise } = require("#functions/media");
-const { makeTempPath, getAsset } = require("#functions/filesystem");
+const { makeTempPath } = require("#functions/filesystem");
 const { translate } = require("#functions/translate");
 
 const FileEmbed = require("#classes/FileEmbed");
@@ -37,7 +37,7 @@ module.exports = {
         switch (shortType) {
             case "image":
                 tempPath = makeTempPath("png");
-                await execPromise(`ffmpeg -i "${path}" -f lavfi -i color=color=0x00000000:s=1x1 -filter_complex \
+                await execPromise(`ffmpeg -i "${path}" -f lavfi -i "color=color=black@0.0:size=1x1,format=rgba" -filter_complex \
                     "[1:v][0:v]scale2ref=round(iw*${direction == "vertical" ? 1 : multiplier}):round(ih*${direction == "horizontal" ? 1 : multiplier})[background][input];\
                     [background][input]overlay=x=${originx}:y=${originy}:format=auto[out]" \
                     -map "[out]" -preset ${args.encodingPreset} "${tempPath}"`);
@@ -45,7 +45,7 @@ module.exports = {
 
             case "video":
                 tempPath = makeTempPath("mp4");
-                await execPromise(`ffmpeg -i "${path}" -f lavfi -i color=color=0x00000000:s=1x1 -map 0:a? -filter_complex \
+                await execPromise(`ffmpeg -i "${path}" -f lavfi -i "color=color=black@0.0:size=1x1,format=rgba" -map 0:a? -filter_complex \
                     "[1:v][0:v]scale2ref=round(iw*${direction == "vertical" ? 1 : multiplier}):round(ih*${direction == "horizontal" ? 1 : multiplier})[background][input];\
                     [background][input]overlay=x=${originx}:y=${originy}:format=auto,scale=ceil(iw/2)*2:ceil(ih/2)*2[out]" \
                     -map "[out]" -preset ${args.encodingPreset} -c:v libx264 -pix_fmt yuv420p "${tempPath}"`);
@@ -53,7 +53,7 @@ module.exports = {
 
             case "gif":
                 tempPath = makeTempPath("gif");
-                await execPromise(`ffmpeg -i "${path}" -f lavfi -i color=color=0x00000000:s=1x1 -filter_complex \
+                await execPromise(`ffmpeg -i "${path}" -f lavfi -i "color=color=black@0.0:size=1x1,format=rgba" -filter_complex \
                     "[1:v][0:v]scale2ref=round(iw*${direction == "vertical" ? 1 : multiplier}):round(ih*${direction == "horizontal" ? 1 : multiplier})[background][input];\
                     [background][input]overlay=x=${originx}:y=${originy}:format=auto,split[pout][ppout];\
                     [ppout]palettegen=reserve_transparent=1[palette];[pout][palette]paletteuse=alpha_threshold=128[out]" \

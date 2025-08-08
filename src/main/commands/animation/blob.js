@@ -1,5 +1,5 @@
 const { execPromise } = require("#functions/media");
-const { makeTempPath, getAsset } = require("#functions/filesystem");
+const { makeTempPath } = require("#functions/filesystem");
 const { translate } = require("#functions/translate");
 
 const FileEmbed = require("#classes/FileEmbed");
@@ -22,7 +22,7 @@ module.exports = {
             case "gif":
                 tempPath = makeTempPath("gif");
                 await execPromise(`ffmpeg -stream_loop -1 -t ${duration} ${ext === "jpg" ? "-f image2 " : ""}-i "${filePath}" \
-                    -r 50 -stream_loop -1 -t ${duration} -f lavfi -i color=color=0x00000000:s=1x1 \
+                    -r 50 -stream_loop -1 -t ${duration} -f lavfi -i "color=color=black@0.0:size=1x1,format=rgba" \
                     -filter_complex "[1:v][0:v]scale2ref=w=iw+iw/10:h=ih[transparent][overlay];\
                     [overlay]fps=50,scale=iw+sin(PI/2*(t*4/${duration}))*(iw/10):ih+cos(PI/2*(t*4/${duration}))*(ih/3)-ih/3:eval=frame[ooverlay];\
                     [transparent][ooverlay]overlay=x=(W-w)/2:y=(H-h):format=auto,split[pout][ppout];\
@@ -34,7 +34,7 @@ module.exports = {
             case "video":
                 tempPath = makeTempPath("mp4");
                 await execPromise(`ffmpeg -r ${fps.includes("0/0") ? "60" : fps} -i "${filePath}" \
-                    -r ${fps.includes("0/0") ? "60" : fps} -f lavfi -i color=color=0x00000000:s=1x1 \
+                    -r ${fps.includes("0/0") ? "60" : fps} -f lavfi -i "color=color=black@0.0:size=1x1,format=rgba" \
                     -filter_complex "[1:v][0:v]scale2ref=w=iw+iw/10:h=ih[transparent][overlay];\
                     [overlay]scale=iw+sin(PI/2*(t*4/${duration}))*(iw/10):ih+cos(PI/2*(t*4/${duration}))*(ih/3)-ih/3:eval=frame[ooverlay];\
                     [transparent][ooverlay]overlay=x=(W-w)/2:y=(H-h):format=auto,scale=ceil(iw/2)*2:ceil(ih/2)*2[out]" \

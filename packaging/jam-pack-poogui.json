@@ -25,7 +25,7 @@
   },
   "build": {
     "applicationName": "PooGUI",
-    "applicationVersion": "0.7.1",
+    "applicationVersion": "0.7.2",
     "packageManager": "npm"
   },
   "prune": {
@@ -68,8 +68,8 @@
     "skip": true,
     "jsEntryPoint": "dist/index.js",
     "windowsIcon": "windows/poogui.ico",
-    "windowsVersionString": "0.7.1",
-    "windowsFileVersion": "0.7.1",
+    "windowsVersionString": "0.7.2",
+    "windowsFileVersion": "0.7.2",
     "windowsProductName": "PooGUI",
     "windowsLegalCopyright": "Copyright (c) 2024-2025 raleigh",
     "windowsOriginalFilename": "poogui.exe",

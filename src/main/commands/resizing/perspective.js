@@ -26,7 +26,7 @@ module.exports = {
 
         let tempPath;
 
-        const perspectiveFilter = `${!stretch ? "pad=iw+2:ih+2:1:1:color=0x00000000," : ""}perspective=${tlX}:${tlY}:${trX}:${trY}:${blX}:${blY}:${brX}:${brY}:sense=destination:interpolation=${interpolation}${!stretch ? ",crop=iw-2:ih-2:1:1" : ""}`;
+        const perspectiveFilter = `${!stretch ? "pad=iw+2:ih+2:1:1:color=black@0.0," : ""}perspective=${tlX}:${tlY}:${trX}:${trY}:${blX}:${blY}:${brX}:${brY}:sense=destination:interpolation=${interpolation}${!stretch ? ",crop=iw-2:ih-2:1:1" : ""}`;
 
         switch (shortType) {
             case "image":

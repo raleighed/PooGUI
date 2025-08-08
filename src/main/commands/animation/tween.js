@@ -1,5 +1,5 @@
 const { execPromise, scaledDimensions } = require("#functions/media");
-const { makeTempPath, getAsset } = require("#functions/filesystem");
+const { makeTempPath } = require("#functions/filesystem");
 const { translate } = require("#functions/translate");
 
 const FileEmbed = require("#classes/FileEmbed");
@@ -215,7 +215,7 @@ module.exports = {
         filterComplex += `;${overlayChain},split[pout][ppout];[ppout]palettegen=reserve_transparent=1[palette];[pout][palette]paletteuse=alpha_threshold=128[out]`;
 
         await execPromise(`ffmpeg ${inputStreamsStr} \
-            -r 50 -stream_loop -1 -t ${duration} -f lavfi -i color=color=0x00000000:s=1x1 \
+            -r 50 -stream_loop -1 -t ${duration} -f lavfi -i "color=color=black@0.0:size=1x1,format=rgba" \
             -filter_complex "${filterComplex}" \
             -map "[out]" -preset ${args.encodingPreset} -gifflags -offsetting -r 50 -t ${duration} "${tempPath}"`);
 

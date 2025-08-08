@@ -35,7 +35,7 @@ module.exports = {
             const loopOption = loop ? `-stream_loop -1` : "";
             const seekOption = loop ? `-ss ${duration}` : "";
             
-            await execPromise(`ffmpeg ${loopOption} -i "${filePath}" -f lavfi -i color=c=black:s=1x1 \
+            await execPromise(`ffmpeg ${loopOption} -i "${filePath}" -f lavfi -i "color=color=black:size=1x1,format=rgba" \
                 -filter_complex "[1:v][0:v]scale2ref[black][gif];[black]split[blackw][blackn];\
                 [gif]hue=b=10[white];[blackw][white]overlay=x=0:y=0:format=auto,lagfun=decay=${decayValue}[meltalpha];\
                 [blackn][0:v]overlay=x=0:y=0:format=auto,lagfun=decay=${decayValue}[melt];\
